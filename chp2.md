@@ -1,4 +1,4 @@
-## Exercises for Chapter 2
+## Exercises and solutions for Chapter 2
 
 ### Computations in R
 
