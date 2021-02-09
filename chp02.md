@@ -54,6 +54,7 @@ myvec[c(TRUE,FALSE,FALSE,FALSE,TRUE)]
 ``` 
 [Difficulty: **Beginner**]
 
+
 18. `==,>,<, >=, <=` operators create logical vectors. See the results of the following operations:
 
 ```{r,eval=FALSE}
