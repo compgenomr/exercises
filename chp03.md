@@ -13,12 +13,24 @@ gset=rnorm(600,mean=200,sd=70)
 data=matrix(gset,ncol=6)
 ```
 
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 
 2. Using the data generated above, calculate the standard deviation of the
 distribution of the means using the `sd()` function. Compare that to the expected
 standard error obtained from the central limit theorem keeping in mind the
 population parameters were  $\sigma=70$ and $n=6$. How does the estimate from the random samples change if we simulate more data with
 `data=matrix(rnorm(6000,mean=200,sd=70),ncol=6)`? [Difficulty: **Beginner/Intermediate**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
 
 3. Simulate 30 random variables using the `rpois()` function. Do this 1000 times and calculate the mean of each sample. Plot the sampling distributions of the means
 using a histogram. Get the 2.5th and 97.5th percentiles of the
@@ -33,10 +45,35 @@ set.seed(100)
 pois1=rpois(30,lambda=5)
 
 ```
+
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 5. Use the bootstrap confidence interval for the mean on `pois1`. [Difficulty: **Intermediate/Advanced**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 6. Compare the theoretical confidence interval of the mean from the `t.test` and the bootstrap confidence interval. Are they similar? [Difficulty: **Intermediate/Advanced**]  
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 7. Try to re-create the following figure, which demonstrates the CLT concept.[Difficulty: **Advanced**] 
-```{r,echo=FALSE,message=FALSE,warning=FALSE}
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+
 set.seed(101)
 require(mosaic)
 par(mfcol=c(4,3))
@@ -112,6 +149,13 @@ gene2=rnorm(30,mean=3,sd=3)
 
 ```
 
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
+
 2. Test the difference of the means of the following simulated genes
 using the randomization, `t-test()` and `wilcox.test()` functions.
 Plot the distributions using histograms and boxplots. [Difficulty: **Intermediate/Advanced**] 
@@ -122,6 +166,12 @@ gene2=rnorm(30,mean=2,sd=2)
 
 ```
 
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 3. We need an extra data set for this exercise. Read the gene expression data set as follows:
 `gexpFile=system.file("extdata","geneExpMat.rds",package="compGenomRData") data=readRDS(gexpFile)`. The data has 100 differentially expressed genes. The first 3 columns are the test samples, and the last 3 are the control samples. Do 
 a t-test for each gene (each row is a gene), and record the p-values.
@@ -130,6 +180,12 @@ the p-values. Make a p-value histogram and compare two approaches in terms of th
 On the p-values use FDR (BH), Bonferroni and q-value adjustment methods.
 Calculate how many adjusted p-values are below 0.05 for each approach.
 [Difficulty: **Intermediate/Advanced**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
 
 ### Relationship between variables: Linear models and correlation
 
@@ -155,14 +211,49 @@ y = b0 + b1*x+ eps
 
 
 1. Run the code then fit a line to predict Y based on X. [Difficulty:**Intermediate**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 2. Plot the scatter plot and the fitted line. [Difficulty:**Intermediate**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 3. Calculate correlation and R^2. [Difficulty:**Intermediate**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 4. Run the `summary()` function and 
 try to extract P-values for the model from the object
 returned by `summary`. See `?summary.lm`. [Difficulty:**Intermediate/Advanced**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 5. Plot the residuals vs. the fitted values plot, by calling the `plot()` 
 function with `which=1` as the second argument. First argument
 is the model returned by `lm()`. [Difficulty:**Advanced**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 
 
 6. For the next exercises, read the data set histone modification data set. Use the following to get the path to the file:
@@ -174,13 +265,45 @@ hmodFile=system.file("extdata",
 There are 3 columns in the dataset. These are measured levels of H3K4me3,
 H3K27me3 and gene expression per gene. Once you read in the data, plot the scatter plot for H3K4me3 vs. expression. [Difficulty:**Beginner**] 
 
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
+
 7. Plot the scatter plot for H3K27me3 vs. expression. [Difficulty:**Beginner**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
 
 8. Fit the model for prediction of expression data using: 1) Only H3K4me3 as explanatory variable, 2) Only H3K27me3 as explanatory variable, and 3) Using both H3K4me3 and H3K27me3 as explanatory variables. Inspect the `summary()` function output in each case, which terms are significant. [Difficulty:**Beginner/Intermediate**] 
 
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
+
 10. Is using H3K4me3 and H3K27me3 better than the model with only H3K4me3? [Difficulty:**Intermediate**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
 
 11. Plot H3k4me3 vs. H3k27me3. Inspect the points that do not
 follow a linear trend. Are they clustered at certain segments 
 of the plot? Bonus: Is there any biological or technical interpretation
 for those points? [Difficulty:**Intermediate/Advanced**] 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```

@@ -19,11 +19,54 @@ m=methRead("~/Downloads/GSM919982_NBM_1_myCpG.txt.gz",
            sample.id = "idh",assembly="hg18")
 ```
 
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
+
 2. Find differentially methylated cytosines. Use chr1 and chr2 only if you need to save time. You can subset it after you download the files either in R or Unix. The files are for hg18 assembly of human genome. [Difficulty: **Beginner**]
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 3. Describe the general differential methylation trend, what is the main effect for most CpGs? [Difficulty: **Intermediate**]
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 4. Annotate differentially methylated cytosines (DMCs) as promoter/intron/exon? [Difficulty: **Beginner**]
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 5. Which genes are the nearest to DMCs? [Difficulty: **Intermediate**]
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 6. Can you do gene set analysis either in R or via web-based tools? [Difficulty: **Advanced**]
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 
 
 
@@ -31,6 +74,34 @@ m=methRead("~/Downloads/GSM919982_NBM_1_myCpG.txt.gz",
 The main objective of this exercise is to learn how to do methylome segmentation and the downstream analysis for annotation and data integration.
 
 1. Download the human embryonic stem-cell (H1 Cell Line) methylation bigWig files from the [Roadmap Epigenomics website](http://egg2.wustl.edu/roadmap/web_portal/processed_data.html#MethylData). It may take a while to understand how the website is structured and which bigWig file to use. That is part of the exercise. The files you will download are for hg19 assembly unless stated otherwise. [Difficulty: **Beginner**]
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 2. Do segmentation on hESC methylome. You can only use chr1 if using the whole genome takes too much time. [Difficulty: **Intermediate**]
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 3. Annotate segments and the kinds of gene-based features each segment class overlaps with (promoter/exon/intron). [Difficulty: **Beginner**]
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
 4. For each segment type, annotate the segments with chromHMM annotations from the Roadmap Epigenome database available [here](https://egg2.wustl.edu/roadmap/web_portal/chr_state_learning.html#core_15state). The specific file you should use is [here](https://egg2.wustl.edu/roadmap/data/byFileType/chromhmmSegmentations/ChmmModels/coreMarks/jointModel/final/E003_15_coreMarks_mnemonics.bed.gz). This is a bed file with chromHMM annotations. chromHMM annotations are parts of the genome identified by a hidden-Markov-model-based machine learning algorithm. The segments correspond to active promoters, enhancers, active transcription, insulators, etc. The chromHMM model uses histone modification ChIP-seq and potentially other ChIP-seq data sets to annotate the genome.[Difficulty: **Advanced**]
+
+**solution:**
+```{r,echo=FALSE,eval=FALSE}
+#coming soon
+ 
+```
+
