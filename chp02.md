@@ -87,7 +87,7 @@ Ex: `vec=1:6` makes a vector of numbers between 1 and 6, and assigns it to the `
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+vec=2:15 
  
 ```
 
@@ -95,8 +95,8 @@ Ex: `vec=1:6` makes a vector of numbers between 1 and 6, and assigns it to the `
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+rep(x=4,times=10)
+rep(4,10) 
 ```
 
 14. Make a logical vector with TRUE, FALSE values of length 4, use `c()`.
@@ -104,7 +104,8 @@ Ex: `c(TRUE,FALSE)`. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+c(TRUE,FALSE,FALSE,TRUE,FALSE)
+c(TRUE,TRUE,FALSE,TRUE,FALSE)
  
 ```
 
@@ -113,7 +114,7 @@ Ex: `avec=c("a","b","c")` makes a character vector of a,b and c. [Difficulty: **
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+c("PAX6","ZIC2","OCT4","SOX2")
  
 ```
 
@@ -122,7 +123,7 @@ Ex: `vec1[1]` gets the first element. `vec1[c(1,3)]` gets the 1st and 3rd elemen
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+vec1[c(5,6)]
  
 ```
 
@@ -140,8 +141,9 @@ myvec[c(TRUE,FALSE,FALSE,FALSE,TRUE)]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+myvec=1:5
+myvec[c(TRUE,TRUE,FALSE,FALSE,FALSE)] # the length of the logical vector should be equal to length(myvec) 
+myvec[c(TRUE,FALSE,FALSE,FALSE,TRUE)] 
 ```
 
 18. `==,>,<, >=, <=` operators create logical vectors. See the results of the following operations:
@@ -159,8 +161,8 @@ myvec != 4
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+myvec[ myvec > 2 ] 
+
 ```
 
 
@@ -169,7 +171,7 @@ Ex: `matrix(1:6,nrow=3,ncol=2)` makes a 3x2 matrix using numbers between 1 and 6
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+mat=matrix(1:15,nrow=5,ncol=3)
  
 ```
 
@@ -178,7 +180,7 @@ Ex: `mat=matrix(1:6,nrow=3,ncol=2,byrow = TRUE)`. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+mat=matrix(1:15,nrow=5,ncol=3,byrow = TRUE)
  
 ```
 
@@ -187,7 +189,7 @@ Ex: `mat=matrix(1:6,nrow=3,ncol=2,byrow = TRUE)`. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+mat[1:3,1:3]
  
 ```
 
@@ -195,11 +197,12 @@ Ex: `mat=matrix(1:6,nrow=3,ncol=2,byrow = TRUE)`. [Difficulty: **Beginner**]
 Ex: `mat[2:3,]` or `mat[c(2,3),]` extracts the 2nd and 3rd rows.
 [Difficulty: **Beginner**]
 
-
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+mat[4:5,] 
+mat[c(nrow(mat)-1,nrow(mat)),] 
+tail(mat,n=1)
+tail(mat,n=2) 
 ```
 
 24. Extract the first two columns and run `class()` on the result.
@@ -207,7 +210,7 @@ Ex: `mat[2:3,]` or `mat[c(2,3),]` extracts the 2nd and 3rd rows.
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+class(mat[,1:2])
  
 ```
 
@@ -216,7 +219,7 @@ Ex: `mat[2:3,]` or `mat[c(2,3),]` extracts the 2nd and 3rd rows.
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+class(mat[,1])
  
 ```
 
@@ -227,7 +230,7 @@ Remember you need to make a 3x5 data frame. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+df=data.frame(col1=1:5,col2=c("a","2","3","b","c"),col3=5:1)
  
 ```
 
@@ -236,8 +239,10 @@ Remember you need to make a 3x5 data frame. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+df[,1:2]
+
+df[1:2,]
+df[1:2,1:2] 
 ```
 
 28. Extract the last two rows of the data frame you made.
@@ -245,7 +250,7 @@ Remember you need to make a 3x5 data frame. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+df[,4:5]
  
 ```
 
@@ -254,7 +259,7 @@ Remember you need to make a 3x5 data frame. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+df[,c("col2","col3")]
  
 ```
 
@@ -263,8 +268,10 @@ You can use `[]` or `$` as in lists; use both in two different answers. [Difficu
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+df$col2
+df[,"col2"]
+class(df["col1"])
+class(df[,"col1"]) 
 ```
 
 31. Extract rows where the 1st column is larger than 3.
@@ -273,7 +280,7 @@ You can use `[]` or `$` as in lists; use both in two different answers. [Difficu
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+df[df$col1 >3 , ]
  
 ```
 
@@ -282,7 +289,7 @@ You can use `[]` or `$` as in lists; use both in two different answers. [Difficu
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+df[df$col1 >= 3 , ]
  
 ```
 
@@ -291,8 +298,9 @@ Observe what happens to numeric values in the data frame. [Difficulty: **Beginne
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+class(df[,c(1,3)])
+as.matrix(df[,c(1,3)])
+as.matrix(df) 
 ```
 
 
@@ -302,8 +310,10 @@ the one below has 2. Ex: `mylist= list(a=c(1,2,3),b=c("apple,"orange"))`
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+mylist= list(a=c(1,2,3),
+            b=c("apple","orange"),
+            c=matrix(1:4,nrow=2),
+            d="hello") 
 ```
 
 35. Select the 1st element of the list you made using `$` notation.
@@ -312,16 +322,15 @@ Ex: `mylist$a` selects first element named "a".
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+mylist$a
  
 ```
 
 36. Select the 4th element of the list you made earlier using `$` notation. [Difficulty: **Beginner**]
 
-
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+mylist$d
  
 ```
 
@@ -332,15 +341,19 @@ Ex: `mylist[1]` selects the first element named "a", and you get a list with one
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+mylist[1] # -> still a list
+mylist[[1]] # not a list
+
+mylist["a"] 
+mylist[["a"]] 
  
 ```
 38. Select the 4th element of your list using `[ ]` notation. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+mylist[4] 
+mylist[[4]] 
 ```
 
 39. Make a factor using factor(), with 5 elements.
@@ -348,7 +361,7 @@ Ex: `fa=factor(c("a","a","b"))`. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+fa=factor(c("a","a","b","c","c"))
  
 ```
 
@@ -358,7 +371,9 @@ First, make a character vector using `c()` then use `as.factor()`.
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+my.vec=c("a","a","b","c","c")
+fa=as.factor(my.vec)
+fa
  
 ```
 
@@ -366,8 +381,9 @@ First, make a character vector using `c()` then use `as.factor()`.
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+fa
+as.character(fa)
+
 ```
 
 
@@ -384,7 +400,8 @@ to get the file path within the installed `compGenomRData` package. [Difficulty:
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+cpgFilePath
+cpgi=read.table(file=cpgFilePath,header=TRUE,sep="\t")
  
 ```
 
@@ -392,7 +409,7 @@ to get the file path within the installed `compGenomRData` package. [Difficulty:
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+head(cpgi)
  
 ```
 
@@ -409,8 +426,8 @@ head(cpgiSepComma)
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+cpgiSepComma=read.table("../data/CpGi.table.hg18.txt",header=TRUE,sep=",")
+head(cpgiSepComma) 
 ```
 
 4. What happens when you set `stringsAsFactors=FALSE` in `read.table()`? [Difficulty: **Beginner**]
@@ -421,8 +438,12 @@ cpgiHF=read.table("intro2R_data/data/CpGi.table.hg18.txt",
 ```                
 
 **solution:**
+The character column is now read as character instead of factor. 
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+head(cpgiHF)
+head(cpgi)
+class(cpgiHF$V2)
+class(cpgiHF$V2)
  
 ```
                
@@ -431,8 +452,8 @@ cpgiHF=read.table("intro2R_data/data/CpGi.table.hg18.txt",
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+cpgi10row=read.table("../data/CpGi.table.hg18.txt",header=TRUE,sep="\t",nrow=10)
+cpgi10row 
 ```
 
 6. Use `cpgFilePath=system.file("extdata","CpGi.table.hg18.txt",`
@@ -442,8 +463,8 @@ cpgiHF=read.table("intro2R_data/data/CpGi.table.hg18.txt",
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+df=read.table(cpgFilePath,header=FALSE,sep="\t")
+head(df) 
 ```
 
 7. Write CpG islands to a text file called "my.cpgi.file.txt". Write the file
@@ -452,7 +473,7 @@ home folder.[Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+write.table(cpgi,file="~/my.cpgi.file.txt")
  
 ```
 
@@ -461,7 +482,7 @@ home folder.[Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+write.table(cpgi,file="~/my.cpgi.file2.txt",quote=FALSE,sep="\t",row.names=FALSE)
  
 ```
 
@@ -471,7 +492,7 @@ home folder.[Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+write.table(cpgi[1:10,],file="~/my.cpgi.fileNrow10.txt",quote=FALSE,sep="\t")
  
 ```
 
@@ -481,15 +502,18 @@ home folder.[Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+dfnew=cpgi[,1:3]
+write.table(dfnew,file="~/my.cpgi.fileCol3.txt",quote=FALSE,sep="\t") 
 ```
 
 11. Write CpG islands only on chr1. **HINT:** Use subsetting with `[]`, feed a logical vector using `==` operator.[Difficulty: **Beginner/Intermediate**] 
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+write.table(cpgi[cpgi$chrom == "chr1",],file="~/my.cpgi.fileChr1.txt",
+            quote=FALSE,sep="\t",row.names=FALSE)
+head(cpgi[cpgi$chrom == "chr1",])
+
  
 ```
 
@@ -500,8 +524,8 @@ can use the `system.file()` function to get the file paths. [Difficulty: **Begin
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+df1=read.table("../data/rn4.refseq.bed",sep="\t",header=FALSE)
+df2=read.table("../data/rn4.refseq2name.txt",sep="\t",header=FALSE)
 ```
 
 
@@ -509,15 +533,16 @@ can use the `system.file()` function to get the file paths. [Difficulty: **Begin
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+head(df1)
+head(df2) 
 ```
 
 14. Merge data sets using `merge()` and assign the results to a variable named 'new.df', and use `head()` to see the results. [Difficulty: **Intermediate**] 
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+new.df=merge(df1,df2,by.x="V4",by.y="V1")
+head(new.df)
  
 ```
 
@@ -537,7 +562,7 @@ y1=1:100
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+plot(x1,y1)
  
 ```
 
@@ -546,7 +571,7 @@ y1=1:100
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+plot(x1,y1,main="scatter plot")
  
 ```
 
@@ -555,7 +580,7 @@ y1=1:100
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+plot(x1,y1,main="scatter plot",xlab="x label")
  
 ```
 
@@ -563,7 +588,8 @@ y1=1:100
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+plot(x1,y1,main="scatter plot",xlab="x label",ylab="y label")
+mtext(side=3,text="hi there") 
  
 ```
 
@@ -571,7 +597,8 @@ y1=1:100
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+mtext(side=2,text="hi there") 
+mtext(side=4,text="hi there") 
  
 ```
 
@@ -585,7 +612,8 @@ myText
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+mtext(side=3,text=paste("here","here"))
+
  
 ```
 
@@ -596,7 +624,7 @@ between two variables X and Y. Try using the `cor()` function on the `x1` and `y
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+corxy=cor(x1,y1) # calculates pearson correlation
  
 ```
 
@@ -604,8 +632,13 @@ between two variables X and Y. Try using the `cor()` function on the `x1` and `y
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+plot(x1,y1,main="scatter")
+corxy=cor(x1,y1) 
+#mtext(side=3,text=paste("Pearson Corr.",corxy))
+mtext(side=3,text=paste("Pearson Corr.",round(corxy,3) ) )
+
+plot(x1,y1)
+mtext(side=3,text=paste("Pearson Corr.",round( cor(x1,y1)  ,3)  ) ) 
 ```
 
 9. Change the colors of your plot using the `col` argument.
@@ -613,7 +646,7 @@ Ex: `plot(x,y,col="red")`. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+plot(x1,y1,col="red")
  
 ```
 
@@ -621,7 +654,7 @@ Ex: `plot(x,y,col="red")`. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+plot(x1,y1,col="red",pch=19)
  
 ```
 
@@ -630,24 +663,21 @@ Ex: `plot(x,y,col="red")`. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+plot(x1,y1,col="red",pch=18)
+?points 
 ```
 
 12. Make a histogram of `x1` with  the `hist()` function. A histogram is a graphical representation of the data distribution. [Difficulty: **Beginner**] 
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+hist(x1)
+
 ```
 
 
 13. You can change colors with 'col', add labels with 'xlab', 'ylab', and add a 'title' with 'main' arguments. Try all these in a histogram.
 [Difficulty: **Beginner**]  
- ```{r,echo=FALSE,eval=FALSE}
-hist(x1,main="title")
-```
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
@@ -659,25 +689,23 @@ hist(x1,main="title")
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+boxplot(y1,main="title")
  
 ```
 
 15. Make boxplots of `x1` and `y1` vectors in the same plot.[Difficulty: **Beginner**] 
 
-
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+boxplot(x1,y1,ylab="values",main="title")
  
 ```
 
 16. In boxplot, use the `horizontal = TRUE`  argument. [Difficulty: **Beginner**] 
 
-
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+boxplot(x1,y1,ylab="values",main="title",horizontal=TRUE)
  
 ```
 
@@ -689,25 +717,25 @@ hist(x1,main="title")
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+par( mfrow=c(1,2) )
+hist(x1)
+boxplot(y1) 
 ```
 
 18. Do the same as above but this time with `par(mfrow=c(1,2))`. [Difficulty: **Beginner/Intermediate**] 
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+par(mfrow=c(2,2))
+hist(x1)
+boxplot(y1) 
 ```
 
 19. Save your plot using the "Export" button in Rstudio. [Difficulty: **Beginner**] 
 
 **solution:**
-```{r,echo=FALSE,eval=FALSE}
-#coming soon
+find and press Export button
  
-```
 
 20. You can make a scatter plot showing the density
 of points rather than points themselves. If you use points it looks like this:
@@ -734,7 +762,9 @@ colramp = colorRampPalette(c("white","blue", "green","yellow","red")))
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+smoothScatter(x2,y2,colramp = heat.colors )
+smoothScatter(x2,y2,
+               colramp = colorRampPalette(c("white","blue", "green","yellow","red")))
  
 ```
 
@@ -754,7 +784,7 @@ The 'perGc' column in the data stands for GC percent => percentage of C+G nucleo
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+hist(cpgi$perGc) # most values are between 60 and 70
  
 ```
 
@@ -762,7 +792,7 @@ The 'perGc' column in the data stands for GC percent => percentage of C+G nucleo
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+boxplot(cpgi$perGc) 
  
 ```
 
@@ -794,7 +824,22 @@ result
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+GCper=65
+ #result="low"# set initial value
+  
+  if(GCper < 60){ # check if GC value is lower than 60, assign "low" to result
+    result="low"
+    cat("low")
+  }
+  else if(GCper > 75){  # check if GC value is higher than 75, assign "high" to result
+    result="high"
+    cat("high")
+  }else{ # if those two conditions fail then it must be "medium"
+    result="medium"
+  }
+
+result
+
  
 ```
 
@@ -817,8 +862,23 @@ GCclass(65) # should return "medium"
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+GCclass<-function(my.gc){
+  
+  result="low"# set initial value
+  
+  if(my.gc < 60){ # check if GC value is lower than 60, assign "low" to result
+    result="low"
+  }
+  else if(my.gc > 75){  # check if GC value is higher than 75, assign "high" to result
+    result="high"
+  }else{ # if those two conditions fail then it must be "medium"
+    result="medium"
+  }
+  return(result)
+}
+GCclass(10) # should return "low"
+GCclass(90) # should return "high"
+GCclass(65) # should return "medium" 
 ```
 
 
@@ -834,8 +894,11 @@ for( i in YOU_FILL_IN){
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+gcValues=c(10,50,70,65,90)
+for( i in gcValues){
  
+  print(GCclass(i) )
+} 
 ```
 
 
@@ -850,7 +913,7 @@ power2=function(x){ return(x^2)  }
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+s=lapply(gcValues,GCclass)
  
 ```
 
@@ -860,7 +923,7 @@ power2=function(x){ return(x^2)  }
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+s=sapply(gcValues,GCclass)
  
 ```
 
@@ -871,6 +934,7 @@ without using if/else structure and loops ? if so, how can you do it?
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+result=rep("low",length(gcValues) )
+result[gcValues > 75]="high"
+result[gcValues < 75 & gcValues > 60 ] = "medium" 
 ```
