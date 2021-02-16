@@ -15,8 +15,13 @@ data=matrix(gset,ncol=6)
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+require(matrixStats)
+means=rowMeans(data)
+vars=rowVars(data)
+hist(means)
+hist(vars) 
+boxplot(means)
+boxplot(vars)
 ```
 
 
@@ -28,8 +33,9 @@ population parameters were  $\sigma=70$ and $n=6$. How does the estimate from th
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+samples=sd(means)
+
+clt.se=70/sqrt(6) 
 ```
 
 3. Simulate 30 random variables using the `rpois()` function. Do this 1000 times and calculate the mean of each sample. Plot the sampling distributions of the means
@@ -49,25 +55,25 @@ pois1=rpois(30,lambda=5)
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+require(mosaic)
+quantile((do(1000)*mean(rpois(30,lambda=5)))[,1],probs=c(0.025,0.975))
  
+t.test(pois1)
 ```
 
 5. Use the bootstrap confidence interval for the mean on `pois1`. [Difficulty: **Intermediate/Advanced**] 
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+quantile((do(1000)*mean(sample(pois1,30,replace=T)))[,1],probs=c(0.025,0.975))
  
 ```
 
 6. Compare the theoretical confidence interval of the mean from the `t.test` and the bootstrap confidence interval. Are they similar? [Difficulty: **Intermediate/Advanced**]  
 
 **solution:**
-```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
-```
+They are all similar but not identical
+
 
 7. Try to re-create the following figure, which demonstrates the CLT concept.[Difficulty: **Advanced**] 
 
@@ -151,8 +157,20 @@ gene2=rnorm(30,mean=3,sd=3)
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+
+t.test(gene1,gene2)
+wilcox.test(gene1,gene2)
+
+#rand test
+org.diff=mean(gene1)-mean(gene2)
+gene.df=data.frame(exp=c(gene1,gene2),
+                  group=c( rep("test",30),rep("control",30) ) )
+
+
+exp.null <- do(1000) * diff(mosaic::mean(exp ~ shuffle(group), data=gene.df))
+
+sum(exp.null>org.diff)/1000
+
 ```
 
 
@@ -168,8 +186,17 @@ gene2=rnorm(30,mean=2,sd=2)
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+t.test(gene1,gene2)
+wilcox.test(gene1,gene2) 
+#rand test
+org.diff=mean(gene1)-mean(gene2)
+gene.df=data.frame(exp=c(gene1,gene2),
+                  group=c( rep("test",30),rep("control",30) ) )
+
+
+exp.null <- do(1000) * diff(mosaic::mean(exp ~ shuffle(group), data=gene.df))
+
+sum(exp.null>org.diff)/1000
 ```
 
 3. We need an extra data set for this exercise. Read the gene expression data set as follows:
@@ -183,8 +210,43 @@ Calculate how many adjusted p-values are below 0.05 for each approach.
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+gexpFile=system.file("extdata","geneExpMat.rds",package="compGenomRData") 
+data=readRDS(gexpFile)
  
+group1=1:3
+group2=4:6
+n1=3
+n2=3
+dx=rowMeans(data[,group1])-rowMeans(data[,group2])
+  
+require(matrixStats)
+
+# get the esimate of pooled variance 
+stderr = sqrt( (rowVars(data[,group1])*(n1-1) + 
+       rowVars(data[,group2])*(n2-1)) / (n1+n2-2) * ( 1/n1 + 1/n2 ))
+
+# do the shrinking towards median
+mod.stderr = (stderr + median(stderr)) / 2 # moderation in variation
+
+# esimate t statistic with moderated variance
+t.mod <- dx / mod.stderr
+
+# calculate P-value of rejecting null 
+p.mod = 2*pt( -abs(t.mod), n1+n2-2 )
+
+# esimate t statistic without moderated variance
+t = dx / stderr
+
+# calculate P-value of rejecting null 
+p = 2*pt( -abs(t), n1+n2-2 )
+
+par(mfrow=c(1,2))
+hist(p,col="cornflowerblue",border="white",main="",xlab="P-values t-test")
+mtext(paste("signifcant tests:",sum(p<0.05))  )
+hist(p.mod,col="cornflowerblue",border="white",main="",
+     xlab="P-values mod. t-test")
+mtext(paste("signifcant tests:",sum(p.mod<0.05))  )
+
 ```
 
 ### Relationship between variables: Linear models and correlation
@@ -214,7 +276,7 @@ y = b0 + b1*x+ eps
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+lm(y~x)
  
 ```
 
@@ -222,7 +284,8 @@ y = b0 + b1*x+ eps
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+plot(x,y)
+abline(lm(y~x))
  
 ```
 
@@ -230,7 +293,9 @@ y = b0 + b1*x+ eps
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+cor(x,y) # pearson cor
+cor(x,y)^2 # R squared
+summary(lm(y~x))
  
 ```
 
@@ -240,7 +305,7 @@ returned by `summary`. See `?summary.lm`. [Difficulty:**Intermediate/Advanced**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+summary(lm(y~x))
  
 ```
 
@@ -250,7 +315,8 @@ is the model returned by `lm()`. [Difficulty:**Advanced**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+mod=lm(y~x)
+plot(mod,which=1)
  
 ```
 
@@ -260,15 +326,16 @@ is the model returned by `lm()`. [Difficulty:**Advanced**]
 ```
 hmodFile=system.file("extdata",
                     "HistoneModeVSgeneExp.rds",
-                     package="compGenomRData")`
+                     package="compGenomRData")
 ```
 There are 3 columns in the dataset. These are measured levels of H3K4me3,
 H3K27me3 and gene expression per gene. Once you read in the data, plot the scatter plot for H3K4me3 vs. expression. [Difficulty:**Beginner**] 
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+hdat=readRDS(hmodFile) 
+plot(hdat$H3k4me3,hdat$measured_log2)
+
 ```
 
 
@@ -276,7 +343,7 @@ H3K27me3 and gene expression per gene. Once you read in the data, plot the scatt
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+plot(hdat$H3k27me3,hdat$measured_log2)
  
 ```
 
@@ -284,18 +351,22 @@ H3K27me3 and gene expression per gene. Once you read in the data, plot the scatt
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+mod1=lm(measured_log2~H3k4me3,data=hdat)
+mod2=lm(measured_log2~H3k27me3,data=hdat)
+mod3=lm(measured_log2~H3k4me3+H3k27me3,data=hdat)
+
+summary(mod1)
+summary(mod2)
+summary(mod3)
+
 ```
+all terms are significant.
 
 
 10. Is using H3K4me3 and H3K27me3 better than the model with only H3K4me3? [Difficulty:**Intermediate**] 
 
 **solution:**
-```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
-```
+Using both histone marks are only slightly better based on R-squared values compared to just using H3K4me3.
 
 11. Plot H3k4me3 vs. H3k27me3. Inspect the points that do not
 follow a linear trend. Are they clustered at certain segments 
@@ -304,6 +375,7 @@ for those points? [Difficulty:**Intermediate/Advanced**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+smoothScatter(hdat$H3k27me3,hdat$H3k4me3)
+cor(hdat$H3k27me3,hdat$H3k4me3)
 ```
+There is a slight negative correlation between these two marks.
