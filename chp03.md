@@ -35,8 +35,15 @@ population parameters were  $\sigma=70$ and $n=6$. How does the estimate from th
 ```{r,echo=FALSE,eval=FALSE}
 samples=sd(means)
 
-clt.se=70/sqrt(6) 
+clt.se=70/sqrt(6) # estimate standard error from population parameters
+
+data1=matrix(rnorm(6000,mean=200,sd=70),ncol=6
+sd(rowMeans(data1))
+
+data2=matrix(rnorm(6000,mean=200,sd=70),ncol=10)
+sd(rowMeans(data2))
 ```
+If we simulate more sets of points keeping the same sample size n=6 as indicated in the piece of code above the estimates won't be different. The standard error will shrink only if we sample more data points per set.
 
 3. Simulate 30 random variables using the `rpois()` function. Do this 1000 times and calculate the mean of each sample. Plot the sampling distributions of the means
 using a histogram. Get the 2.5th and 97.5th percentiles of the
