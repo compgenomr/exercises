@@ -15,8 +15,13 @@ mat=readRDS(expFile)
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+# transform data matrix
+scaled_mat <- scale(mat) # by default, center=TRUE, scale=TRUE
+logscaled_mat <- scale(log2(mat))
+# make boxplots
+boxplot(mat)
+boxplot(scaled_mat)
+boxplot(logscaled_mat) 
 ```
 
 2. For the same problem above using the unscaled data and different data transformation strategies, use the `ward.d` distance in hierarchical clustering and plot multiple heatmaps. You can try to use the `pheatmap` library or any other library that can plot a heatmap with a dendrogram. Which data-scaling strategy provides more homogeneous clusters with respect to disease types? [Difficulty: **Beginner/Intermediate**]
