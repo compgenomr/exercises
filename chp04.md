@@ -28,9 +28,26 @@ boxplot(logscaled_mat)
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+library(pheatmap) # See https://towardsdatascience.com/pheatmap-draws-pretty-heatmaps-483dab9a3cc for a helpful tutorial 
+
+# The leukemia type for each sample is indicated by the first 3 letters of each ID, which we'll store to use in pheatmap
+annotation_col <-  data.frame(LeukemiaType =substr(colnames(mat),1,3)) # store first 3 letters from each ID in dataframe
+rownames(annotation_col)=colnames(mat) # add rownames to this dataframe to crossreference each ID to its type in next step
+
+# generate heatmap with unscaled data
+pheatmap(mat = mat,
+  show_rownames = FALSE, show_colnames = FALSE, # names are too long to print
+  annotation_col = annotation_col, # to show leukemia type for each sample
+  clustering_method = "ward.D2", # distance metric is euclidean by default
+  main = "Unscaled heatmap") # adds title
+# generate heatmap with scaled data
+pheatmap(mat = scaled_mat, show_rownames = FALSE, show_colnames = FALSE, annotation_col = annotation_col, clustering_method = "ward.D2", main = "Scaled heatmap")
+# generate heatmap with log-scaled data
+pheatmap(mat = logscaled_mat, show_rownames = FALSE, show_colnames = FALSE, annotation_col = annotation_col, clustering_method = "ward.D2", main = "Log-scaled heatmap")
 ```
+
+The clusters seem comparable with all three strategies: In all three heatmaps, one case doesn't cluster with its type, but otherwise the remaining cases do cluster as expected.
+
 
 3. For the transformed and untransformed data sets used in the exercise above, use the silhouette for deciding number of clusters using hierarchical clustering. [Difficulty: **Intermediate/Advanced**]
 
