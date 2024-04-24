@@ -46,7 +46,7 @@ pheatmap(mat = scaled_mat, show_rownames = FALSE, show_colnames = FALSE, annotat
 pheatmap(mat = logscaled_mat, show_rownames = FALSE, show_colnames = FALSE, annotation_col = annotation_col, clustering_method = "ward.D2", main = "Log-scaled heatmap")
 ```
 
-The clusters seem comparable with all three strategies: In all three heatmaps, one case doesn't cluster with its type, but otherwise the remaining cases do cluster as expected.
+*The clusters seem comparable with all three strategies: In all three heatmaps, one case doesn't cluster with its type, but otherwise the remaining cases do cluster as expected.*
 
 
 3. For the transformed and untransformed data sets used in the exercise above, use the silhouette for deciding number of clusters using hierarchical clustering. [Difficulty: **Intermediate/Advanced**]
@@ -72,9 +72,12 @@ We will be using the leukemia expression data set again. You can use it as shown
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+PCA_Leuk <- princomp(scaled_mat)
+summary(PCA_Leuk) 
+screeplot(PCA_Leuk) 
 ```
+
+*While the first principal component explains nearly 50% of the variation, the top 25 principal components are required to explain 95% of the variation.*
 
 2. Our next tasks are to remove eigenvectors and reconstruct the matrix using SVD, then calculate the reconstruction error as the difference between original and reconstructed matrix. Remove a few eigenvectors, reconstruct the matrix and calculate the reconstruction error. Reconstruction error can be euclidean distance between original and reconstructed matrices. HINT: You have to use the `svd()` function and equalize eigenvalue to $0$ for the component you want to remove. [Difficulty: **Intermediate/Advanced**]
 
@@ -96,6 +99,28 @@ We will be using the leukemia expression data set again. You can use it as shown
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+set.seed(42) # Set seed for reproducible results
+tsne_out <- Rtsne(mat) # Run t-sne using default perplexity = 30
+tsne_10 <- Rtsne(mat, perplexity = 10) 
+tsne_100 <- Rtsne(mat, perplexity = 100)
+
+
+# Show the objects in the 2D tsne representation
+plot(tsne_out$Y,col=as.factor(annotation_col$LeukemiaType),
+     pch=19)
+
+# create the legend for the Leukemia types
+legend("bottomleft",
+       legend=unique(annotation_col$LeukemiaType),
+       fill =palette("default"),
+       border=NA,box.col=NA) 
+
+# Show the objects in the 2D tsne representation
+plot(tsne_10$Y,col=as.factor(annotation_col$LeukemiaType),
+     pch=19)
+# Show the objects in the 2D tsne representation
+plot(tsne_100$Y,col=as.factor(annotation_col$LeukemiaType),
+     pch=19) 
 ```
+
+*As perplexity increases, the range of the x- and y-axes are reduced. 
