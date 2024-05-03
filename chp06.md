@@ -157,7 +157,29 @@ hist(CpGi.lengths, xlab = "Lengths (bps)", breaks = 10) # make a histogram of le
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+# first get a file with the promoter locations on chr20
+transcriptFile <- system.file("extdata",
+                           "refseq.hg19.chr20.bed",
+                           package="compGenomRData")
+library(genomation)
+feat20.grl <- readTranscriptFeatures(transcriptFile, # see CompGenomR 6.1.2.1
+                            remove.unusual = TRUE)
+feat20.grl # glimpse GRangesList object with exons, introns, promoters, TSSes on chr20
+
+prom20.gr <- feat20.grl$promoters # get promoters from the features
+prom20.gr
+
+bwFile <- system.file("extdata",
+                      "H1.ESC.H3K4me3.chr20.bw",
+                      package="compGenomRData")
+# import the H3K4me3 data for the chr20 promoters as RleList object
+cov.bw <- import(bwFile, which=prom20.gr, as = "RleList")
+myViews <- Views(cov.bw, as(prom20.gr,"IRangesList")) # get subsets of coverage
+# there is a views object for each chromosome
+myViews
+
+# plot the coverage vector from the 1st view
+plot(myViews[[1]][[1]], type="l")
  
 ```
 
@@ -165,7 +187,7 @@ hist(CpGi.lengths, xlab = "Lengths (bps)", breaks = 10) # make a histogram of le
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+hist(viewMaxs(myViews[[1]]), xlab = "Maximum H3K4me3 signal")
  
 ```
 
