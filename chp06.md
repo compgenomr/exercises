@@ -22,7 +22,16 @@ You will need some of those files to complete the exercises.
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+library(GenomicRanges)
+
+gr <- GRanges(seqnames=c("chr1","chr1","chr2"),
+           ranges=IRanges(start=c(10000,11100,20000),
+                          end=c(10300,11500,20030)),
+           strand=c("+","-","+"),
+           score=c(10,20,15)
+)
+
+gr
  
 ```
 
@@ -33,7 +42,15 @@ to use `start()`, `end()` and `strand()`,`seqnames()` within the `[]`. [Difficul
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+# For each genomic interval, return...
+start(gr) # ...its start position
+end(gr) # ...its end position
+strand(gr) # ...its strand
+seqnames(gr) #...its sequence name
+width(gr) # its calculated interval from start to end (inclusive)
+
+gr[strand(gr) == "+"] # Retrieve intervals (rows) on + strand using logical operation
+gr[seqnames(gr) == "chr1"] # Retrieve intervals on chr1 using logical operation
  
 ```
 
@@ -43,7 +60,41 @@ to use `start()`, `end()` and `strand()`,`seqnames()` within the `[]`. [Difficul
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+library(rtracklayer) # load necessary package
+# start a session at the nearest gateway
+session <- browserSession("UCSC",url = 'http://genome.ucsc.edu/cgi-bin/') 
+genome(session) <- "mm9" # mouse genome assembly
+
+## CpG islands on chr12
+CpG.query <- ucscTableQuery(session, 
+                        track="CpG Islands",
+                        table="cpgIslandExt",
+                        range=GRangesForUCSCGenome("mm9", "chr12"))
+## get the GRanges object 
+CPG.gr <- track(CpG.query) # works OK
+CPG.gr # glimpse GRanges object
+
+## RefSeq Genes on chr12
+RSG.query <- ucscTableQuery(session, 
+                        # track="RefSeq Genes", # error for Unknown track: RefSeq Genes
+                        track="NCBI RefSeq", # apparently renamed
+                        table="refGene",
+                        range=GRangesForUCSCGenome("mm9", "chr12"))
+
+## get the GRanges object 
+# track(RSG.query) # Error in stop_if_wrong_length(what, ans_len) : 'ranges' must have the length of the object to construct (1598) or length 1
+# Due to error, instead retrieve table data frame
+RSG.df <- getTable(RSG.query)
+# And then convert data frame into GRanges object
+RSG.gr <- GRanges(
+  seqnames = RSG.df$chrom, # alternative to [] to select columns from df
+  ranges = IRanges(start=RSG.df$txStart, 
+                   end=RSG.df$txEnd),
+  strand = RSG.df$strand,
+  name = RSG.df$name,
+  name2 = RSG.df$name2,
+  exonCount = RSG.df$exonCount)
+RSG.gr  # glimpse GRanges object
  
 ```
 
@@ -52,7 +103,18 @@ to use `start()`, `end()` and `strand()`,`seqnames()` within the `[]`. [Difficul
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+prom.gr <- promoters(RSG.gr, upstream = 1000, downstream = 1000)
+prom.gr <- unique(prom.gr) # another way to remove duplicates
+n_prom <- length(prom.gr) # number of unique promoters
+n_prom
+
+prom_CpGi1 <- findOverlaps(prom.gr, CPG.gr, select = "first") # only select first overlap
+n_prom_CpGi1 <- length(na.omit(prom_CpGi1)) # remove NAs and count number of first overlaps with unique promoters
+n_prom_CpGi1
+
+# compute percentage of promoters that overlap a CpG island(s)
+perc_overlap <- n_prom_CpGi1/n_prom * 100
+perc_overlap
  
 ```
 
@@ -62,7 +124,10 @@ promoters. [Difficulty: **Beginner/Intermediate**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+prom_CpGi <- findOverlaps(prom.gr, CPG.gr) # get ALL overlaps
+ol_CpGi_prom <- unique(prom_CpGi@to) # select 'to' vector with row numbers of CpG islands overlapping with promoters and then remove duplicate row numbers
+CpGi.lengths <- width(CPG.gr[ol_CpGi_prom]) # subset the CpGi GRanges with an overlap and get the width of each range
+hist(CpGi.lengths, xlab = "Lengths (bps)", breaks = 10) # make a histogram of lengths
  
 ```
 
@@ -92,7 +157,29 @@ promoters. [Difficulty: **Beginner/Intermediate**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+# first get a file with the promoter locations on chr20
+transcriptFile <- system.file("extdata",
+                           "refseq.hg19.chr20.bed",
+                           package="compGenomRData")
+library(genomation)
+feat20.grl <- readTranscriptFeatures(transcriptFile, # see CompGenomR 6.1.2.1
+                            remove.unusual = TRUE)
+feat20.grl # glimpse GRangesList object with exons, introns, promoters, TSSes on chr20
+
+prom20.gr <- feat20.grl$promoters # get promoters from the features
+prom20.gr
+
+bwFile <- system.file("extdata",
+                      "H1.ESC.H3K4me3.chr20.bw",
+                      package="compGenomRData")
+# import the H3K4me3 data for the chr20 promoters as RleList object
+cov.bw <- import(bwFile, which=prom20.gr, as = "RleList")
+myViews <- Views(cov.bw, as(prom20.gr,"IRangesList")) # get subsets of coverage
+# there is a views object for each chromosome
+myViews
+
+# plot the coverage vector from the 1st view
+plot(myViews[[1]][[1]], type="l")
  
 ```
 
@@ -100,7 +187,7 @@ promoters. [Difficulty: **Beginner/Intermediate**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+hist(viewMaxs(myViews[[1]]), xlab = "Maximum H3K4me3 signal")
  
 ```
 
