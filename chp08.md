@@ -15,31 +15,79 @@ coldata_file <- system.file("extdata/rna-seq/SRP029880.colData.tsv",
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+# first compare total counts for each sample
+counts <- as.matrix(read.table(counts_file, header = T, sep = '\t'))
+colSums(counts) / 1E9 # display billions of reads for each sample 
+# calculate TPM (transcripts per million)
+#find gene length normalized values 
+geneLengths <- as.vector(subset(counts, select = c(width)))
+rpk <- apply(subset(counts, select = c(-width)), 
+             2, 
+             function(x) {x/(geneLengths/1000)}
+            )
+#normalize by the sample size using rpk values
+tpm <- apply(rpk, 
+             2, 
+             function(x) {x / sum(as.numeric(x)) * 10^6}
+             )
+colSums(tpm) # confirm that normalized values sum to 10^6
+head(tpm) # glimpse data
+
 ```
 
 2. Plot a heatmap of the top 500 most variable genes. Compare with the heatmap obtained using the 100 most variable genes. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+#compute the variance of each gene across samples
+V <- apply(X = tpm, 
+           MARGIN = 1, 
+           FUN = var)
+
+# sort the results by variance in decreasing order 
+selectedGenes <- names(V[order(V, decreasing = T)])
+# make heatmaps clustering genes and samples
+library(pheatmap)
+# add annotations for samples 
+colData <- read.table(coldata_file, header = T, sep = '\t', 
+                      stringsAsFactors = TRUE)
+# heatmap with the top 100 genes 
+pheatmap(tpm[selectedGenes[1:100], ], scale = 'row', show_rownames = FALSE,
+         annotation_col = colData)
+# heatmap with the top 500 genes 
+pheatmap(tpm[selectedGenes[1:500], ], scale = 'row', show_rownames = FALSE)
  
 ```
+
+*Clustering with the TPM values of the top 100 genes or top 500 genes produces a tree that separately clusters the control and case samples. However, there is some difference in which samples cluster together between the two heatmaps. For example, Case 1 is most closely related to case 4 in the 100 gene tree, but Case 1 is most closely related to Case 3 in the 500 gene tree.*
+
 
 3. Re-do the heatmaps setting the `scale` argument to `none`, and `column`. Compare the results with `scale = 'row'`. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+pheatmap(tpm[selectedGenes[1:500], ], show_rownames = FALSE)
+pheatmap(tpm[selectedGenes[1:500], ], scale = 'column', show_rownames = FALSE)
  
 ```
+
+*Scaling by rows allows you to compare relative expression levels of each gene across the samples. Without any scaling, only extreme differences in absolute expression levels are noticeable; in particular, the variation among lowly-level genes (TPM < 50000) is not noticeable.  When scaling by columns, the heatmap indicates that nearly all of these genes with similar absolute values show average levels (log = 0) of expression among the nearly 20,000 genes overall.*
+
 
 4. Draw a correlation plot for the samples depicting the sample differences as 'ellipses', drawing only the upper end of the matrix, and order samples by hierarchical clustering results based on `average` linkage clustering method. [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+correlationMatrix <- cor(tpm)
+# visualize
+library(corrplot)
+corrplot(correlationMatrix, 
+         method = "ellipse", type = "upper",
+         order = 'hclust', 
+         hclust.method = "average",
+         # addrect = 2, 
+         addCoef.col = 'black', 
+         number.cex = 0.7) 
  
 ```
 
@@ -47,7 +95,27 @@ coldata_file <- system.file("extdata/rna-seq/SRP029880.colData.tsv",
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+# Heatmaps
+# compute the sum of each gene across samples
+TE <- apply(X = tpm, 
+           MARGIN = 1, 
+           FUN = sum)
+# sort the results by total of expression values in decreasing order 
+selectedGenes_TE <- names(TE[order(TE, decreasing = T)])
+# heatmap with the top 100 genes 
+pheatmap(tpm[selectedGenes_TE[1:100], ], scale = 'row', show_rownames = FALSE)
+
+# PCA
+library(ggfortify)
+# transpose the matrix so genes become columns
+M <- t(tpm[selectedGenes,])
+# transform the counts to log2 scale 
+M <- log2(M + 1) # + 1 to avoid log(0)
+# compute PCA 
+pcaResults <- prcomp(M)
+
+# plot PCA results making use of ggplot2's autoplot function
+autoplot(pcaResults, data = colData, colour = 'group')
  
 ```
 
@@ -55,7 +123,10 @@ coldata_file <- system.file("extdata/rna-seq/SRP029880.colData.tsv",
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+colData$batch <- c(rep(letters[1:2],times = 5)) # simulate batch effect
+pheatmap(tpm[selectedGenes_TE[1:100],], scale = 'row', 
+         show_rownames = FALSE, 
+         annotation_col = colData)
  
 ```
 
@@ -99,15 +170,49 @@ Now, you are ready to do the following exercises:
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+# First create needed objects (see list above)
+# 1. read count data: remove the 'width' column from previous matrix
+counts <- as.matrix(read.table(counts_file, header = T, sep = '\t'))
+countData <- as.matrix(subset(counts, select = c(-width)))
+# 2. get table with experimental setup 
+colData <- read.table(coldata_file, header = T, sep = '\t', 
+                      stringsAsFactors = TRUE)
+# 3. define the design formula, indicating variable of interest in colData
+designFormula <- "~ group"
+# set up DESeqDataSet object
+library(DESeq2)
+# Now create a DESeq dataset object from the three elements above 
+dds <- DESeqDataSetFromMatrix(countData = countData, 
+                              colData = colData, 
+                              design = as.formula(designFormula))
+# For each gene, we count the total number of reads for that gene in all samples 
+# and only keep those that have at least 2 reads
+dds <- dds[rowSums(DESeq2::counts(dds)) > 1, ]
+# run analysis on this filtered data set
+dds <- DESeq(dds)
+# compute the contrast (difference) for the 'group' variable 
+# where 'CTRL' samples are used as the control group. 
+DEresults = results(dds, contrast = c("group", 'CASE', 'CTRL')) 
+# sort rows by increasing p-value
+DEresults <- DEresults[order(DEresults$pvalue),]
+
+# show the top 10 genes to briefly check results
+head(DEresults, n = 10) 
+
+# make volcano plot
+ggplot(data = as.data.frame(DEresults), 
+       aes(x = log2FoldChange, y = -log10(pvalue))) + 
+  geom_point()
+
 ```
 
 2. Use DESeq2::plotDispEsts to make a dispersion plot and find out the meaning of this plot. (Hint: Type ?DESeq2::plotDispEsts) [Difficulty: **Beginner**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
+plotDispEsts(dds, ymin = 1e-03, # removes empty plot space due to outlier
+             # finalcol = NULL # uncomment to see all original values in black
+             )
  
 ```
 
@@ -115,17 +220,22 @@ Now, you are ready to do the following exercises:
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
- 
+?DESeq2::results 
+
 ```
+
+*Default value is 0. If the default value is changed to 1, then this performs a hypothesis test that the absolute values of log2 fold changes are less than or equal to 1 (assuming that altHypothesis is at the default setting of greaterAbs).*
+
 
 4. What is independent filtering? What happens if we don't use it? Google `independent filtering statquest` and watch the online video about independent filtering. [Difficulty: **Intermediate**]
 
 **solution:**
 ```{r,echo=FALSE,eval=FALSE}
-#coming soon
  
 ```
+
+*Independent filtering is a method to reduce the number of tested genes to improve the power of statistical testing, the ability to detect true positives. The method removes genes with low expression values, which are more likely to yield false positives due to higher dispersion (see above). By reducing the number of false positives, the proportion of true positives is increased.*
+
 
 5. Re-do the differential expression analysis using the `edgeR` package. Find out how much DESeq2 and edgeR agree on the list of differentially expressed genes. [Difficulty: **Advanced**] 
 
